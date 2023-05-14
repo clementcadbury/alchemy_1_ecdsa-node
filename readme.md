@@ -1,4 +1,4 @@
-## ECDSA Node
+## ECDSA Node - Alchemy Ethereum Dev Bootcamp Week 1 project
 
 # Client side modifications
 
