@@ -1,31 +1,14 @@
 ## ECDSA Node
 
-This project is an example of using a client and server to facilitate transfers between different addresses. Since there is just a single server on the back-end handling transfers, this is clearly very centralized. We won't worry about distributed consensus for this project.
+# Client side modifications
 
-However, something that we would like to incoporate is Public Key Cryptography. By using Elliptic Curve Digital Signatures we can make it so the server only allows transfers that have been signed for by the person who owns the associated address.
+- src/App.jsx : added privateKey state variable and setter
+- src/ecdsa.js : putting the sign and hexAddressFromPrivateKey function in a separate file
+- src/Transfer.jsx : modifying the transfer function to send signed message with privateKey
+- src/Wallet.jsx : input is now the private key, derived address is shown
 
-### Video instructions
-For an overview of this project as well as getting started instructions, check out the following video:
+# Server side modifications
 
-https://www.loom.com/share/0d3c74890b8e44a5918c4cacb3f646c4
- 
-### Client
-
-The client folder contains a [react app](https://reactjs.org/) using [vite](https://vitejs.dev/). To get started, follow these steps:
-
-1. Open up a terminal in the `/client` folder
-2. Run `npm install` to install all the depedencies
-3. Run `npm run dev` to start the application 
-4. Now you should be able to visit the app at http://127.0.0.1:5173/
-
-### Server
-
-The server folder contains a node.js server using [express](https://expressjs.com/). To run the server, follow these steps:
-
-1. Open a terminal within the `/server` folder 
-2. Run `npm install` to install all the depedencies 
-3. Run `node index` to start the server 
-
-The application should connect to the default server port (3042) automatically! 
-
-_Hint_ - Use [nodemon](https://www.npmjs.com/package/nodemon) instead of `node` to automatically restart the server on any changes.
+- scripts/generate.js : generate a private/public key pair and the derived address, sign a message, recover public key and address and verify signature
+- src/ecdsa.js : function verifySignature in a separate file
+- index.js : balances array modified with values from scripts/generate.js, send route gets signature and transfer only if signature is valid

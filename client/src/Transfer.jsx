@@ -1,6 +1,6 @@
 import { useState } from "react";
 import server from "./server";
-import sign from './ecdsa';
+import { sign } from './ecdsa';
 
 function Transfer({ privateKey, address, setBalance }) {
   const [sendAmount, setSendAmount] = useState("");
