@@ -1,7 +1,8 @@
 import { useState } from "react";
 import server from "./server";
+import sign from './ecdsa';
 
-function Transfer({ address, setBalance }) {
+function Transfer({ privateKey, address, setBalance }) {
   const [sendAmount, setSendAmount] = useState("");
   const [recipient, setRecipient] = useState("");
 
@@ -10,14 +11,19 @@ function Transfer({ address, setBalance }) {
   async function transfer(evt) {
     evt.preventDefault();
 
+    let sendData = {
+      sender: address,
+      amount: parseInt(sendAmount),
+      recipient,
+    };
+
+    const message = JSON.stringify(sendData);
+    sendData.signature = sign(message,privateKey);
+
     try {
       const {
         data: { balance },
-      } = await server.post(`send`, {
-        sender: address,
-        amount: parseInt(sendAmount),
-        recipient,
-      });
+      } = await server.post(`send`, sendData);
       setBalance(balance);
     } catch (ex) {
       alert(ex.response.data.message);
@@ -38,9 +44,9 @@ function Transfer({ address, setBalance }) {
       </label>
 
       <label>
-        Recipient
+        Recipient Address
         <input
-          placeholder="Type an address, for example: 0x2"
+          placeholder="Type an address, for example: 25a2"
           value={recipient}
           onChange={setValue(setRecipient)}
         ></input>
