@@ -18,7 +18,7 @@ function App() {
         privateKey={privateKey}
         setPrivateKey={setPrivateKey}
       />
-      <Transfer setBalance={setBalance} address={address} privateKey={privateKey} />
+      <Transfer setBalance={setBalance} privateKey={privateKey} />
       <div>
           private key (64) : ae733b98450378056e70d3590d3c9344a8afb5f5c7aeb513bb7d9646c738d0b9<br/>
           public key (66) : 03b0941f866ba3d591e14e1d4f64d054605d24518997478adfcef0673b8e23dcc9<br/>

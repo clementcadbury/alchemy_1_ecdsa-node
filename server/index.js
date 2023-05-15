@@ -1,4 +1,4 @@
-const { verifySignature } = require("./src/ecdsa");
+const { verifySignature,hexAddressFromPublicKey } = require("./src/ecdsa");
 const express = require("express");
 const app = express();
 const cors = require("cors");
@@ -34,19 +34,20 @@ app.get("/balance/:address", (req, res) => {
 });
 
 app.post("/send", (req, res) => {
-  const { sender, recipient, amount , signature } = req.body;
+  const { publicKey, recipient, amount , signature } = req.body;
 
   const sentData = {
-    sender: sender,
+    publicKey: publicKey,
     amount: parseInt(amount),
     recipient,
   };
 
   const message = JSON.stringify(sentData);
   
-  const signatureVerified = verifySignature(message,signature);
+  const signatureVerified = verifySignature(publicKey,message,signature);
 
   if ( signatureVerified ) {
+    const sender = hexAddressFromPublicKey(publicKey);
 
     setInitialBalance(sender);
     setInitialBalance(recipient);

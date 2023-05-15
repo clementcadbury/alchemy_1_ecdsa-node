@@ -1,8 +1,8 @@
 import { useState } from "react";
 import server from "./server";
-import { sign } from './ecdsa';
+import { sign,hexPublicKeyFromPrivateKey } from './ecdsa';
 
-function Transfer({ privateKey, address, setBalance }) {
+function Transfer({ privateKey, setBalance }) {
   const [sendAmount, setSendAmount] = useState("");
   const [recipient, setRecipient] = useState("");
 
@@ -11,8 +11,10 @@ function Transfer({ privateKey, address, setBalance }) {
   async function transfer(evt) {
     evt.preventDefault();
 
+    const publicKey = hexPublicKeyFromPrivateKey(privateKey);
+
     let sendData = {
-      sender: address,
+      publicKey: publicKey,
       amount: parseInt(sendAmount),
       recipient,
     };

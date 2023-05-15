@@ -7,6 +7,10 @@ export const hexAddressFromPrivateKey = function(privateKey){
     const address = toHex(keccak256(publicKey.slice(1)).slice(-20));
     return address;
 };
+export const hexPublicKeyFromPrivateKey = function(privateKey){
+    const publicKey = toHex(secp.secp256k1.getPublicKey(privateKey));
+    return publicKey;
+};
 export const sign = function (message,privateKey){
     const messageHash = keccak256(utf8ToBytes(message));
     const signedMessage = secp.secp256k1.sign(messageHash,privateKey);
