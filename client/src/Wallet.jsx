@@ -4,8 +4,14 @@ import { hexAddressFromPrivateKey } from './ecdsa';
 function Wallet({ address, setAddress, balance, setBalance, privateKey, setPrivateKey }) {
   async function onChange(evt) {
     const privateKey = evt.target.value;
+    let address;
+    try {
+      address = hexAddressFromPrivateKey(privateKey);
+    } catch {
+      address = "";
+    }
+
     setPrivateKey(privateKey);
-    const address = hexAddressFromPrivateKey(privateKey);
     setAddress(address);
     if (address) {
       const {
@@ -23,7 +29,7 @@ function Wallet({ address, setAddress, balance, setBalance, privateKey, setPriva
 
       <label>
         Private Key
-        <input placeholder="Your private key, for example: 0x1" value={privateKey} onChange={onChange}></input>
+        <input placeholder="Your private key, for example: 0x1" value={privateKey} onChange={onChange} ></input>
       </label>
       <div>Address : {address}</div>
       <div className="balance">Balance: {balance}</div>
